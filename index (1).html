@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Validador SIRE SUNAT</title><link rel="stylesheet" href="styles.css">
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+</head>
+<body>
+<header class="top"><div class="logo">S</div><div><small>HERRAMIENTA CONTABLE</small><h1>Validador SIRE SUNAT</h1><p>Prevalidación de archivos de compras y ventas</p></div><span class="version">VERSIÓN 2.0</span></header>
+<main>
+<section class="hero"><div><span class="pill">RCE · RVIE</span><h2>Revisa tus archivos antes de cargarlos al SIRE</h2><p>Separa compras y ventas, detecta errores de formato, revisa datos esenciales y descarga un reporte de observaciones.</p></div><div class="hero-icon">✓</div></section>
+<section class="notice"><b>Alcance:</b> esta herramienta realiza controles locales preliminares. No se conecta a SUNAT, no consulta el estado real de los comprobantes y no reemplaza el Programa Validador SIRE (PVSIRE). Para una validación oficial, utiliza el PVSIRE de SUNAT.</section>
+<nav class="tabs"><button class="tab active" data-page="validate">Validar TXT SIRE</button><button class="tab" data-page="excel">Trabajar con Excel base</button></nav>
+<section id="validate" class="page active">
+<div class="panel"><div class="head"><div><small>PASO 1</small><h2>Selecciona el registro</h2></div><span class="muted">Archivos de reemplazo</span></div>
+<div class="grid2"><label>Tipo de registro<select id="kind"><option value="RCE">RCE – Registro de Compras</option><option value="RVIE">RVIE – Registro de Ventas e Ingresos</option></select></label><label>RUC del contribuyente<input id="ruc" maxlength="11" inputmode="numeric" placeholder="Ej. 20123456789"></label><label>Periodo tributario<input id="period" type="month" value="2026-10"></label><label>Archivo TXT o ZIP<input id="txtFile" type="file" accept=".txt,.zip"></label></div>
+<div class="actions"><button class="primary" id="validateBtn">Validar archivo</button><button class="light" id="resetValidate">Limpiar</button></div><div id="fileInfo" class="muted small">Aún no has seleccionado un archivo.</div></div>
+<div id="validationResults" class="panel hidden"><div class="head"><div><small>RESULTADO</small><h2>Reporte de prevalidación</h2></div><button class="secondary" id="downloadReport">Descargar reporte CSV</button></div><div class="stats"><div><small>Filas revisadas</small><strong id="totalRows">0</strong></div><div><small>Con observaciones</small><strong id="badRows">0</strong></div><div><small>Errores detectados</small><strong id="errorCount">0</strong></div><div><small>Estado preliminar</small><strong id="resultState">—</strong></div></div><div class="tablewrap"><table><thead><tr><th>Fila</th><th>Campo</th><th>Observación</th><th>Valor</th></tr></thead><tbody id="issues"></tbody></table></div><p class="muted small" id="validationNote"></p></div>
+</section>
+<section id="excel" class="page">
+<div class="panel"><div class="head"><div><small>CONVERSOR DE PLANTILLA</small><h2>Preparar información desde Excel</h2></div><a class="link" href="VALIDADOR.xlsx" download>Descargar plantilla Excel</a></div><p class="muted">Lee tu plantilla VALIDADOR.xlsx: encabezados en fila 2, datos desde fila 3. Omite columnas auxiliares C, G e I.</p>
+<div class="grid2"><label>Tipo de archivo de salida<select id="excelKind"><option value="COMPRAS">Compras</option><option value="VENTAS">Ventas</option></select></label><label>Archivo Excel o CSV<input id="excelFile" type="file" accept=".xlsx,.xls,.csv"></label><label>Mes<select id="month"><option>ENERO</option><option>FEBRERO</option><option>MARZO</option><option>ABRIL</option><option>MAYO</option><option>JUNIO</option><option>JULIO</option><option>AGOSTO</option><option>SEPTIEMBRE</option><option selected>OCTUBRE</option><option>NOVIEMBRE</option><option>DICIEMBRE</option></select></label><label>Año<input id="year" type="number" min="2020" max="2099" value="2026"></label></div>
+<div class="actions"><button class="primary" id="loadExcel">Leer Excel</button><button class="light" id="clearExcel">Limpiar</button></div><div id="excelInfo" class="muted small">Carga la plantilla o un archivo con los mismos campos.</div></div>
+<div id="excelResults" class="panel hidden"><div class="head"><div><small>VISTA PREVIA</small><h2>Registros detectados</h2></div><strong id="excelCount">0 filas</strong></div><div class="tablewrap"><table><thead><tr><th>RUC</th><th>Tipo</th><th>Serie</th><th>Número</th><th>Fecha</th><th>Total</th><th>Estado</th></tr></thead><tbody id="excelRows"></tbody></table></div><div class="actions"><button class="primary" id="exportTxt">Descargar TXT en ZIP (máx. 100 filas)</button><button class="secondary" id="exportXlsx">Descargar Excel organizado</button></div><p class="muted small">Formato interno de 6 campos: RUC|TIPO|SERIE|NUMERO|FECHA|IMPORTE. Este TXT de seis campos no es el archivo plano oficial de reemplazo RCE/RVIE.</p></div>
+</section>
+<footer>Validador SIRE SUNAT · Procesamiento local en tu navegador · No almacena ni transmite tus archivos.</footer>
+</main><script src="app.js"></script>
+</body></html>
